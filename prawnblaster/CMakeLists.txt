@@ -40,7 +40,7 @@ foreach (overclock IN LISTS overclocks)
     endif()
 
     # Pull in our pico_stdlib which aggregates commonly used features
-    target_link_libraries(${firmware_name} pico_stdlib hardware_pio pico_multicore pico_unique_id hardware_clocks hardware_dma tinyusb_device tinyusb_board)
+    target_link_libraries(${firmware_name} pico_stdlib hardware_pio pico_multicore pico_unique_id hardware_clocks hardware_dma hardware_vreg tinyusb_device tinyusb_board)
     target_include_directories(${firmware_name} PRIVATE .)
 
     # create map/bin/hex/uf2 file etc.

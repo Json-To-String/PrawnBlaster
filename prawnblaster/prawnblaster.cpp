@@ -29,6 +29,7 @@
 #include "hardware/clocks.h"
 #include "hardware/structs/pll.h"
 #include "hardware/structs/clocks.h"
+#include "hardware/vreg.h"
 
 #include "pseudoclock.pio.h"
 
@@ -756,6 +757,14 @@ void measure_freqs(void)
 #endif
 }
 
+void measure_voltage(void)
+{
+    enum vreg_voltage vreg_val = vreg_get_voltage();
+    // Voltage is 
+    float voltage = 0.55f + (vreg_val * 0.05f);
+    fast_serial_printf("voltage = %.2fV\r\n", voltage);
+}
+
 void resus_callback(void)
 {
     // Switch back to internal clock with the dfeault frequency
@@ -801,6 +810,11 @@ void loop()
     else if (strncmp(readstring, "getfreqs", 8) == 0)
     {
         measure_freqs();
+        fast_serial_printf("ok\r\n");
+    }
+     else if (strncmp(readstring, "getvolts", 8) == 0)
+    {
+        measure_voltage();
         fast_serial_printf("ok\r\n");
     }
     else if (strncmp(readstring, "abort", 5) == 0)
@@ -1016,7 +1030,7 @@ void loop()
     else if (strncmp(readstring, "setclock", 8) == 0)
     {
         unsigned int src;  // 0 = internal, 1=GPIO pin 20, 2=GPIO pin 22
-        unsigned int freq; // in Hz (up to 133 or 150 MHz depending on board)
+        unsigned int freq; // in Hz (up to 133 or 200 MHz depending on board)
         int parsed = sscanf(readstring, "%*s %u %u", &src, &freq);
         if (parsed < 2)
         {
@@ -1024,6 +1038,14 @@ void loop()
         }
         else
         {
+            if (freq >= 150 * MHZ)
+            {
+                    vreg_set_voltage(VREG_VOLTAGE_1_30);
+                }
+                if (freq < 150 * MHZ)
+                {
+                    vreg_set_voltage(VREG_VOLTAGE_1_10);
+            }
             if (DEBUG)
             {
                 fast_serial_printf("Got request mode=%u, freq=%u MHz\r\n", src, freq / MHZ);
@@ -1039,7 +1061,7 @@ void loop()
 #    if PRAWNBLASTER_PICO_BOARD == 1
                 if (freq > 133 * MHZ)
 #    elif PRAWNBLASTER_PICO_BOARD == 2
-                if (freq > 150 * MHZ)
+                if (freq > 200 * MHZ)
 #    else
 #        error "Unsupported PICO_BOARD"
 #    endif // PICO_BOARD
