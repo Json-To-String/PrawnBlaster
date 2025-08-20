@@ -1030,7 +1030,7 @@ void loop()
     else if (strncmp(readstring, "setclock", 8) == 0)
     {
         unsigned int src;  // 0 = internal, 1=GPIO pin 20, 2=GPIO pin 22
-        unsigned int freq; // in Hz (up to 133 or 200 MHz depending on board)
+        unsigned int freq; // in Hz (depends on board)
         int parsed = sscanf(readstring, "%*s %u %u", &src, &freq);
         if (parsed < 2)
         {
@@ -1059,9 +1059,9 @@ void loop()
 
 #ifndef PRAWNBLASTER_OVERCLOCK
 #    if PRAWNBLASTER_PICO_BOARD == 1
-                if (freq > 133 * MHZ)
-#    elif PRAWNBLASTER_PICO_BOARD == 2
                 if (freq > 200 * MHZ)
+#    elif PRAWNBLASTER_PICO_BOARD == 2
+                if (freq > 150 * MHZ)
 #    else
 #        error "Unsupported PICO_BOARD"
 #    endif // PICO_BOARD
