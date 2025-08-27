@@ -37,11 +37,7 @@ extern "C"{
 #include "fast_serial.h"
 }
 
-#ifndef PRAWNBLASTER_OVERCLOCK
 const char VERSION[16] = "1.2.0";
-#else
-const char VERSION[16] = "1.2.0-overclock";
-#endif //PRAWNBLASTER_OVERCLOCK
 
 int DEBUG;
 
