@@ -9,7 +9,7 @@ The [original Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/) (RP
 > [!CAUTION]
 > The RP2350 A2 stepping currently has a hardware design bug that impacts the operation of the internal pull-down resistor on GPIO pins configured as inputs.
 > This may impact the operation of the PrawnBlaster trigger inputs when using the RP2350, depending on the specs of your trigger. For full details, see errata E9 in the [RP2350 datasheet](https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf).
-> The issue can usually be fixed by providing a suitably sized external pull-down resistor on the relevant input pins or avoiding boards with A2 steppings in favor of A3 and A4 steppings which do not have this problem.
+> The issue can usually be fixed by providing a suitably sized external pull-down resistor on the relevant input pins or avoiding boards with A2 steppings in favor of board with A3 and A4 steppings which do not have this problem.
 > RP2040 based boards do not suffer from this issue (but have reduced timing and storage compared to the RP2350).
 
 ## What is a pseudoclock device?
